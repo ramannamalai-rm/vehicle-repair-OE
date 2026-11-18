@@ -55,6 +55,30 @@ namespace RL.Data.Migrations
                     b.ToTable("PlanProcedures");
                 });
 
+            modelBuilder.Entity("RL.Data.DataModels.PlanProcedureUser", b =>
+                {
+                    b.Property<int>("PlanId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProcedureId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PlanId", "ProcedureId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PlanProcedureUsers");
+                });
+
             modelBuilder.Entity("RL.Data.DataModels.Procedure", b =>
                 {
                     b.Property<int>("ProcedureId")
@@ -846,9 +870,33 @@ namespace RL.Data.Migrations
                     b.Navigation("Procedure");
                 });
 
+            modelBuilder.Entity("RL.Data.DataModels.PlanProcedureUser", b =>
+                {
+                    b.HasOne("RL.Data.DataModels.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RL.Data.DataModels.PlanProcedure", "PlanProcedure")
+                        .WithMany("PlanProcedureUsers")
+                        .HasForeignKey("PlanId", "ProcedureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlanProcedure");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("RL.Data.DataModels.Plan", b =>
                 {
                     b.Navigation("PlanProcedures");
+                });
+
+            modelBuilder.Entity("RL.Data.DataModels.PlanProcedure", b =>
+                {
+                    b.Navigation("PlanProcedureUsers");
                 });
 #pragma warning restore 612, 618
         }
