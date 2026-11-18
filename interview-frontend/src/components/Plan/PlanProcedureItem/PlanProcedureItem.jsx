@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 import ReactSelect from "react-select";
+import { addUserToPlanProcedure } from "../../../api/api";
 
-const PlanProcedureItem = ({ procedure, users }) => {
-    const [selectedUsers, setSelectedUsers] = useState(null);
+const PlanProcedureItem = ({ planId, procedure, users, planProcedureUsers }) => {
+    const [selectedUsers, setSelectedUsers] = useState(() =>
+        users.filter((u) =>
+            planProcedureUsers.some((ppu) => ppu.userId === u.value)
+        )
+    );
 
-    const handleAssignUserToProcedure = (e) => {
-        setSelectedUsers(e);
-        // TODO: Remove console.log and add missing logic
-        console.log(e);
+    const handleAssignUserToProcedure = async (e, { action, option }) => {
+        if (action !== "select-option") return;
+
+        const hasUserInProcedure = selectedUsers.some((u) => u.value === option.value);
+        if (hasUserInProcedure) return;
+
+        await addUserToPlanProcedure(planId, procedure.procedureId, option.value);
+        setSelectedUsers((prevState) => [...prevState, option]);
     };
 
     return (
@@ -22,7 +31,7 @@ const PlanProcedureItem = ({ procedure, users }) => {
                 isMulti={true}
                 options={users}
                 value={selectedUsers}
-                onChange={(e) => handleAssignUserToProcedure(e)}
+                onChange={(e, actionMeta) => handleAssignUserToProcedure(e, actionMeta)}
             />
         </div>
     );
