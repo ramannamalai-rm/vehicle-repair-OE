@@ -37,4 +37,20 @@ public class PlanProcedureController : ControllerBase
 
         return response.ToActionResult();
     }
+
+    [HttpPost("RemoveUserFromPlanProcedure")]
+    public async Task<IActionResult> RemoveUserFromPlanProcedure(RemoveUserFromPlanProcedureCommand command, CancellationToken token)
+    {
+        var response = await _mediator.Send(command, token);
+
+        return response.ToActionResult();
+    }
+
+    [HttpPost("RemoveAllUsersFromPlanProcedure")]
+    public async Task<IActionResult> RemoveAllUsersFromPlanProcedure(RemoveAllUsersFromPlanProcedureCommand command, CancellationToken token)
+    {
+        var response = await _mediator.Send(command, token);
+
+        return response.ToActionResult();
+    }
 }
