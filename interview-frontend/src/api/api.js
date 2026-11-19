@@ -50,6 +50,40 @@ export const addUserToPlanProcedure = async (planId, procedureId, userId) => {
     return true;
 };
 
+export const removeUserFromPlanProcedure = async (planId, procedureId, userId) => {
+    const url = `${api_url}/PlanProcedure/RemoveUserFromPlanProcedure`;
+    var command = { planId: planId, procedureId: procedureId, userId: userId };
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(command),
+    });
+
+    if (!response.ok) throw new Error("Failed to remove user from procedure");
+
+    return true;
+};
+
+export const removeAllUsersFromPlanProcedure = async (planId, procedureId) => {
+    const url = `${api_url}/PlanProcedure/RemoveAllUsersFromPlanProcedure`;
+    var command = { planId: planId, procedureId: procedureId };
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(command),
+    });
+
+    if (!response.ok) throw new Error("Failed to remove users from procedure");
+
+    return true;
+};
+
 export const getProcedures = async () => {
     const url = `${api_url}/Procedures`;
     const response = await fetch(url, {
