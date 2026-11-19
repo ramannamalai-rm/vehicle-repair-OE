@@ -108,7 +108,7 @@ Deleting a plan procedure or a user also deletes its rows in this table (cascade
 
 ## How to run and test
 
-I ran and tested it without docker, in two terminals from the repo folder.
+To run it without Docker, use two terminals from the repo folder.
 
 Backend, on `http://localhost:10010`:
 
@@ -126,8 +126,6 @@ $env:PORT=3001; npm start
 ```
 
 The port matters: the backend only allows requests from `http://localhost:3001`, and without `PORT` the frontend starts on 3000.
-
-The docker setup from the Start section above is not changed (no new packages, no changes to the Dockerfiles or `docker-compose.yml`), but I did not run the solution through docker.
 
 Unit tests:
 
