@@ -86,7 +86,7 @@ The users picked in "Select User to Assign" were only kept in React state inside
 
 ## Data model
 
-[DataModel.PNG](DataModel.PNG) shows the tables that were already there. The new `PlanProcedureUser` table sits between `PlanProcedure` and `User`:
+[DataModel.PNG](DataModel.PNG) shows the tables that were already there. The new `PlanProcedureUser` entity (table `PlanProcedureUsers`) sits between `PlanProcedure` and `User`:
 
 ```mermaid
 erDiagram
@@ -108,18 +108,24 @@ Deleting a plan procedure or a user also deletes its rows in this table (cascade
 
 ## How to run and test
 
-I ran and tested it without docker:
+I ran and tested it without docker, in two terminals from the repo folder.
+
+Backend, on `http://localhost:10010`:
 
 ```
 cd Interview/RL.Backend
 dotnet run
-
-cd interview-frontend
-npm install
-npm start
 ```
 
-The frontend has to run on port 3001 (set `PORT=3001`), the backend only allows that origin.
+Frontend, on `http://localhost:3001` (PowerShell shown, on bash use `PORT=3001 npm start`):
+
+```
+cd interview-frontend
+npm install
+$env:PORT=3001; npm start
+```
+
+The port matters: the backend only allows requests from `http://localhost:3001`, and without `PORT` the frontend starts on 3000.
 
 The docker setup from the Start section above is not changed (no new packages, no changes to the Dockerfiles or `docker-compose.yml`), but I did not run the solution through docker.
 
@@ -132,7 +138,5 @@ dotnet test
 
 ## Assumptions
 
-- Assigning a user that is already assigned, removing a user that is not assigned and removing all when there are none all return success, the same way `AddProcedureToPlan` succeeds when the procedure is already in the plan.
-- A user can only be assigned to a procedure that was added to the plan, otherwise the request returns 404.
 - "Remove all" uses the clear button that the select already has, so no extra button was added.
 - The select is only updated after the request succeeds. If a request fails the selection stays as it was, there is no error message shown to the user.
